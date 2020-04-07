@@ -18,9 +18,6 @@ def registration():
     username = user_information['username']
     password = user_information['password']
     data_manager.registration(username, password)
-    print(user_information['username'] + user_information['password'])
-
-    print(user_information)
     return response
 
 
