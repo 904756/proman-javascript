@@ -1,3 +1,14 @@
 #boards {
     background-color: green;
 }
+
+.invisible {
+    display: none;
+    background-color: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-top: black;
+    border-radius: 5px;
+}

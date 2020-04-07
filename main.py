@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify, make_response, session, redirect
 import data_manager
 
 app = Flask(__name__)
-
+# app.config["SECRET_KEY"] = 'PQHL-_RyvW8-rlGvakZUBQ'
 
 @app.route("/")
 def boards():
@@ -27,14 +27,17 @@ def sign_in():
     username = log_in_data['username']
     password = log_in_data['password']
     match = data_manager.check_username_and_password(username, password)
-    print(str(match)+ username + password)
-    if match == True:
+    print(str(match) + username + password)
+    if match:
         message = 'Logging you in'
     else:
         message = 'Incorrect username or password'
     res = make_response(jsonify({'response': message}))
     return res
 
+@app.route('/log-out')
+def log_out():
+    return redirect('/')
 
 def main():
     app.run(debug=True)

@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>ProMan</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ProMan</title>
 
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-        <script src="{{ url_for('static', filename='js/data_handler.js') }}" defer></script>
-        <script src="{{ url_for('static', filename='js/dom.js') }}" defer></script>
-        <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-        <script src="static/js/script.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="{{ url_for('static', filename='js/data_handler.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/dom.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script src="static/js/script.js" defer></script>
 
-    </head>
-    <body>
-        <h1>ProMan</h1>
-        <div id="boards">Boards are loading...</div>
-        <div id="registration">
-            <p>Registration</p>
-        <form>
-            <label>Username:</label><input id="username"type="text"></br></br></br>
-            <label>Password:</label><input id="password" type="password"></br></br></br>
-            <button id="submit_button">Sign up</button>
-        </form>
-        </div>
-        <div id="sign_in">
-            <p>Sign in</p>
-        <form>
-            <label>Username:</label><input id="usernameSI"type="text"></br></br></br>
-            <label>Password:</label><input id="passwordSI" type="password"></br></br></br>
-            <button id="sign_in_button">Sign in</button>
-        </form>
-        </div>
-    </body>
+</head>
+<body>
+<header>
+    <nav class="topnav" id = 'head'>
+            <a href="#" onclick="showElement(signInBox)">Sign in</a>
+            <a href="#" onclick="showElement(registrationBox)">Sign up</a>
+    </nav>
+    <hr>
+</header>
+<h1>ProMan</h1>
+<div id="boards">Boards are loading...</div>
+<div id="registration" class = 'invisible'>
+    <p>Registration</p>
+    <form>
+        <label>Username:</label><input id="username" type="text"></br></br></br>
+        <label>Password:</label><input id="password" type="password"></br></br></br>
+        <button id="submit_button">Sign up</button>
+    </form>
+</div>
+<div id="sign_in" class = 'invisible'>
+    <p>Sign in</p>
+    <form>
+        <label>Username:</label><input id="usernameSI" type="text"></br></br></br>
+        <label>Password:</label><input id="passwordSI" type="password"></br></br></br>
+        <button id="sign_in_button">Sign in</button>
+    </form>
+</div>
+</body>
 </html>
