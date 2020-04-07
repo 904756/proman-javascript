@@ -7,22 +7,44 @@
 
 //`
 
-let button = document.getElementById('submit_button');
+let registrationButton = document.getElementById('submit_button');
+let logInButton = document.getElementById('sign_in_button');
+let registration = '/registration';
+let signUp = '/sign-in';
 
-button.addEventListener("click", function getUserInfo(event) {
+registrationButton.addEventListener("click", function (event) {
     event.preventDefault();
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
-    saveUserInfo(username, password);
-})
+    sendUserInfo(username, password, registration);
+});
+logInButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    let username = document.getElementById('usernameSI').value;
+    let password = document.getElementById('passwordSI').value;
+    sendUserInfo(username, password, signUp, setSessionUser);
+});
 
-function saveUserInfo(username, password){
-    fetch('/registration', {
+function sendUserInfo(username, password, string, callback) {
+
+    fetch(string, {
         method: 'POST',
         credentials: "include",
         body: JSON.stringify({'username': username, 'password': password}),
         cache: "no-cache",
         headers: new Headers({'content-type': 'application/json'})
-    }).then(function (response) { return response.json()
-    }).then(function (message){window.alert(message.response)});
+    }).then(function (response) {
+        console.log(response);
+        return response.json()
+    }).then(function (message) {
+            window.alert(message.response);
+        }
+    );
+    if (callback) {
+                callback(username)
+            }
+}
+
+function setSessionUser(user) {
+    sessionStorage.setItem('username', user)
 }
