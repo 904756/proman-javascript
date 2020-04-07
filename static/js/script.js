@@ -5,7 +5,7 @@
 // And ensure if I click on the submit button, my username and password gets stored so I can login with these later."
 */
 
-
+//`
 
 let button = document.getElementById('submit_button');
 
@@ -13,7 +13,17 @@ button.addEventListener("click", function getUserInfo(event) {
     event.preventDefault();
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
-    console.log(username);
-    console.log(password);
+    saveUserInfo(username, password);
 })
 
+function saveUserInfo(username, password){
+    fetch('/registration', {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify({'username': username, 'password': password}),
+        cache: "no-cache",
+        headers: new Headers({'content-type': 'application/json'})
+    }).then(function (response) { return response.json()
+
+    }).then(function (message){window.alert(message.response)});
+}
