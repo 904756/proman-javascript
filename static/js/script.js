@@ -24,6 +24,5 @@ function saveUserInfo(username, password){
         cache: "no-cache",
         headers: new Headers({'content-type': 'application/json'})
     }).then(function (response) { return response.json()
-
     }).then(function (message){window.alert(message.response)});
 }
