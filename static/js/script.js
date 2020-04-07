@@ -12,6 +12,35 @@ let registrationButton = document.getElementById('submit_button');
 let logInButton = document.getElementById('sign_in_button');
 let registration = '/registration';
 let signUp = '/sign-in';
+let count = 0;
+let newBoardButton = document.getElementById('newBoard');
+newBoardButton.onclick = function () {
+    let allBoards = document.getElementById('boards');
+    count += 1;
+    let board = '<div class ="board"> <button class="expand" onclick="expand(this.parentElement)">v</button>Board number' + count + '</div>';
+    allBoards.innerHTML += board
+};
+
+function expand(div) {
+    div.innerHTML += boxContent;
+    let closeButtons = document.getElementsByClassName('close');
+    for (let button of closeButtons) {
+        button.onclick = function () {
+            closeDiv(button.parentNode);
+            console.log(button.parentNode)
+        }
+    }
+}
+
+let boxContent = '<div id="opened"><button class="close">^</button><table><tr><td>AAAAA</td><td>AAAAA</td><td>AAAAA</td><td>AAAAA</td></tr>' +
+    '<tr><td>BBBBB</td><td>BBBBB</td><td>BBBBB</td><td>BBBBB</td></tr>' +
+    '<tr><td>CCCCC</td>CCCCC<td></td>CCCCC<td>CCCCC</td></tr>' +
+    '<tr><td>DDDDD</td>DDDDD<td></td>DDDDD<td>DDDDD</td></tr>' +
+    '</table></div>';
+
+function closeDiv(div) {
+    div.innerHTML = '';
+}
 
 registrationButton.addEventListener("click", function (event) {
     event.preventDefault();
