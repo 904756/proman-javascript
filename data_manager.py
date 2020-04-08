@@ -8,7 +8,7 @@ def registration(cursor, username, password):
     good_hash = hashpsw.decode('utf-8')
     cursor.execute(""" INSERT INTO proman_users (username, password)
                     VALUES (%(username)s, %(good_hash)s) """,
-                    {'username': username, 'good_hash': good_hash})
+                   {'username': username, 'good_hash': good_hash})
 
 
 @database_connection.connection_handler
@@ -36,3 +36,8 @@ def get_all_boards(cursor):
     cursor.execute('''select * from boards''')
     all_boards = cursor.fetchall()
     return all_boards
+
+
+@database_connection.connection_handler
+def create_new_board(cursor, name):
+    cursor.execute('''INSERT INTO boards(board_name) VALUES (%(name)s)''', {'name': name})

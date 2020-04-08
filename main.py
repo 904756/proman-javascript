@@ -3,6 +3,7 @@ import data_manager
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def boards():
     ''' this is a one-pager which shows all the boards and cards '''
@@ -26,17 +27,18 @@ def sign_in():
     username = log_in_data['username']
     password = log_in_data['password']
     match = data_manager.check_username_and_password(username, password)
-    print(str(match) + username + password)
     if match:
         message = 'Logging you in'
     else:
         message = 'Incorrect username or password'
-    res = make_response(jsonify({'response': message}))
+    res = make_response(jsonify({'response': message}), 200)
     return res
+
 
 @app.route('/log-out')
 def log_out():
     return redirect('/')
+
 
 @app.route('/all-stories')
 def all_stories():
@@ -44,11 +46,22 @@ def all_stories():
     res = make_response(jsonify(stories))
     return res
 
+
 @app.route('/all-boards')
 def all_boards():
     boards = data_manager.get_all_boards()
     res = make_response(jsonify(boards))
     return res
+
+
+@app.route('/new-board', methods=['POST'])
+def new_board():
+    name = request.get_json()['name']
+    print(name)
+    data_manager.create_new_board(name)
+    res = make_response(jsonify({'response': 'it worked'}), 200)
+    return res
+
 
 def main():
     app.run(debug=True)

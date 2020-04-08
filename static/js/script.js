@@ -1,17 +1,10 @@
-let registrationBox = document.getElementById('registration');
-let signInBox = document.getElementById('sign_in');
-let registrationButton = document.getElementById('submit_button');
-let logInButton = document.getElementById('sign_in_button');
-let registration = '/registration';
-let signUp = '/sign-in';
-let count = 0;
-let newBoardButton = document.getElementById('newBoard');
-
 window.onload = function () {
     loadExistingBoards()
 
 
 };
+
+//Display Board Functions
 
 function loadExistingStories(board, div) {
     fetch('/all-stories').then((response) => {
@@ -44,11 +37,14 @@ function loadExistingBoards() {
                 div.innerText = elem['board_name'];
                 div.appendChild(button);
                 let storiesDiv = document.createElement('div');
-                button.onclick = function() {
-                loadExistingStories(elem, storiesDiv)};
+                button.onclick = function () {
+                    loadExistingStories(elem, storiesDiv)
+                };
                 let closeButton = document.createElement('button');
                 closeButton.innerText = '^';
-                closeButton.onclick = function(){closeDiv(storiesDiv)};
+                closeButton.onclick = function () {
+                    closeDiv(storiesDiv)
+                };
                 boards.appendChild(closeButton);
                 div.appendChild(storiesDiv);
                 boards.appendChild(div);
@@ -62,6 +58,40 @@ function loadExistingBoards() {
 function closeDiv(div) {
     div.innerHTML = '';
 }
+
+
+
+
+
+//Create New Board Function
+let newBoardButton = document.getElementById('newBoard');
+let boardForm = document.getElementById('create');
+let button = document.getElementById('createNewBoard');
+button.addEventListener('click', function (event) {
+    event.preventDefault();
+    saveBoard()
+});
+function saveBoard(){
+    let boardName = document.getElementById('newBoard');
+    fetch('/new-board',{method: 'POST',
+        credentials: "include",
+        body: JSON.stringify({'name': boardName.value}),
+        cache: "no-cache",
+        headers: new Headers({'content-type': 'application/json'})}).then((response)=> {return response.json()}).then((data)=>{console.log(data)})
+}
+
+
+
+
+
+//User related functions
+let registrationBox = document.getElementById('registration');
+let signInBox = document.getElementById('sign_in');
+let registrationButton = document.getElementById('submit_button');
+let logInButton = document.getElementById('sign_in_button');
+let registration = '/registration';
+let signUp = '/sign-in';
+let count = 0;
 
 registrationButton.addEventListener("click", function (event) {
     event.preventDefault();
@@ -77,6 +107,14 @@ logInButton.addEventListener("click", function (event) {
     sendUserInfo(username, password, signUp, setSessionUser);
     hideElement(signInBox)
 });
+
+function showElement(element) {
+    element.style.display = 'flex';
+}
+
+function hideElement(element) {
+    element.style.display = 'none';
+}
 
 function sendUserInfo(username, password, string, callback) {
 
@@ -111,12 +149,4 @@ function logOut() {
     header.innerHTML = '';
     header.innerHTML = '<a href="#">Sign in</a>' + "  " +
         '<a href="#">Sign up</a>'
-}
-
-function showElement(element) {
-    element.style.display = 'flex';
-}
-
-function hideElement(element) {
-    element.style.display = 'none';
 }
