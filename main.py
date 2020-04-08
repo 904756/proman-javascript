@@ -39,6 +39,18 @@ def sign_in():
 def log_out():
     return redirect('/')
 
+@app.route('/all-stories')
+def all_stories():
+    stories = data_manager.get_data_from_table()
+    res = make_response(jsonify(stories))
+    return res
+
+@app.route('/all-boards')
+def all_boards():
+    boards = data_manager.get_all_boards()
+    res = make_response(jsonify(boards))
+    return res
+
 def main():
     app.run(debug=True)
 
