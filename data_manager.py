@@ -41,3 +41,8 @@ def get_all_boards(cursor):
 @database_connection.connection_handler
 def create_new_board(cursor, name):
     cursor.execute('''INSERT INTO boards(board_name) VALUES (%(name)s)''', {'name': name})
+
+
+@database_connection.connection_handler
+def delete_board(cursor, board_id):
+    cursor.execute('''DELETE from boards WHERE board_id = %(board_id)s''', {'boardid': board_id})

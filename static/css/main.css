@@ -1,5 +1,5 @@
 #boards {
-
+padding:50px
 }
 
 .invisible {
@@ -25,3 +25,12 @@ padding: 50px;
 .expanded {
 display:none;
 }
+.header{
+float: left;
+padding:5px;
+}
+.stories{
+padding: 10px}
+
+.story{
+margin: 100px}

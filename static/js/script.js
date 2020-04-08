@@ -6,22 +6,6 @@ window.onload = function () {
 
 //Display Board Functions
 
-function loadExistingStories(board, div) {
-    fetch('/all-stories').then((response) => {
-            return response.json()
-        }
-    ).then((data) => {
-            for (let story of Object.values(data)) {
-                if (story['board_id'] === board['board_id']) {
-                    let boardDiv = document.createElement('div');
-                    boardDiv.className = 'stories';
-                    boardDiv.innerText = story['story_name'];
-                    div.appendChild(boardDiv)
-                }
-            }
-        }
-    )
-}
 
 function loadExistingBoards() {
     fetch('/all-boards').then((response) => {
@@ -45,8 +29,9 @@ function loadExistingBoards() {
                 closeButton.onclick = function () {
                     closeDiv(storiesDiv)
                 };
-                boards.appendChild(closeButton);
+                div.appendChild(closeButton);
                 div.appendChild(storiesDiv);
+                div.className = 'story';
                 boards.appendChild(div);
 
             }
@@ -55,12 +40,36 @@ function loadExistingBoards() {
 }
 
 
-function closeDiv(div) {
-    div.innerHTML = '';
+function divideStoriesInColumns(data, div, board) {
+    let colHeaders = ['New', 'In progress', 'Testing', 'Done'];
+    for (let header of colHeaders) {
+        let head = document.createElement('div');
+        head.innerText=header;
+        head.className = 'header';
+        for (let story of Object.values(data)) {
+            if (story['column_name'] === header && story['board_id'] === board['board_id']) {
+                let cardDiv = document.createElement('div');
+                cardDiv.innerText = story['story_name'];
+                head.appendChild(cardDiv);
+            }
+        }
+        div.appendChild(head);
+    }
+}
+
+function loadExistingStories(board, div) {
+    fetch('/all-stories').then((response) => {
+            return response.json()
+        }
+    ).then((data) => {
+        divideStoriesInColumns(data, div, board)
+    })
 }
 
 
-
+function closeDiv(div) {
+    div.innerHTML = '';
+}
 
 
 //Create New Board Function
@@ -71,17 +80,21 @@ button.addEventListener('click', function (event) {
     event.preventDefault();
     saveBoard()
 });
-function saveBoard(){
+
+function saveBoard() {
     let boardName = document.getElementById('newBoard');
-    fetch('/new-board',{method: 'POST',
+    fetch('/new-board', {
+        method: 'POST',
         credentials: "include",
         body: JSON.stringify({'name': boardName.value}),
         cache: "no-cache",
-        headers: new Headers({'content-type': 'application/json'})}).then((response)=> {return response.json()}).then((data)=>{console.log(data)})
+        headers: new Headers({'content-type': 'application/json'})
+    }).then((response) => {
+        return response.json()
+    }).then((data) => {
+        console.log(data)
+    })
 }
-
-
-
 
 
 //User related functions
