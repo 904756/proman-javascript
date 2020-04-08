@@ -1,11 +1,3 @@
-/* "Given my application server is started,
- When I open the root url (/),
-  Then ensure that there is a register link on the page,
-// And ensure if I click on it, I see a registration page with a form where I can input my chosen username and password,
-// And ensure if I click on the submit button, my username and password gets stored so I can login with these later."
-*/
-
-//`
 let registrationBox = document.getElementById('registration');
 let signInBox = document.getElementById('sign_in');
 let registrationButton = document.getElementById('submit_button');
@@ -14,29 +6,58 @@ let registration = '/registration';
 let signUp = '/sign-in';
 let count = 0;
 let newBoardButton = document.getElementById('newBoard');
-newBoardButton.onclick = function () {
-    let allBoards = document.getElementById('boards');
-    count += 1;
-    let board = '<div class ="board"> <button class="expand" onclick="expand(this.parentElement)">v</button>Board number' + count + '</div>';
-    allBoards.innerHTML += board
+
+window.onload = function () {
+    loadExistingBoards()
+
+
 };
 
-function expand(div) {
-    div.innerHTML += boxContent;
-    let closeButtons = document.getElementsByClassName('close');
-    for (let button of closeButtons) {
-        button.onclick = function () {
-            closeDiv(button.parentNode);
-            console.log(button.parentNode)
+function loadExistingStories(board, div) {
+    fetch('/all-stories').then((response) => {
+            return response.json()
         }
-    }
+    ).then((data) => {
+            for (let story of Object.values(data)) {
+                if (story['board_id'] === board['board_id']) {
+                    let boardDiv = document.createElement('div');
+                    boardDiv.className = 'stories';
+                    boardDiv.innerText = story['story_name'];
+                    div.appendChild(boardDiv)
+                }
+            }
+        }
+    )
 }
 
-let boxContent = '<div id="opened"><button class="close">^</button><table><tr><td>AAAAA</td><td>AAAAA</td><td>AAAAA</td><td>AAAAA</td></tr>' +
-    '<tr><td>BBBBB</td><td>BBBBB</td><td>BBBBB</td><td>BBBBB</td></tr>' +
-    '<tr><td>CCCCC</td>CCCCC<td></td>CCCCC<td>CCCCC</td></tr>' +
-    '<tr><td>DDDDD</td>DDDDD<td></td>DDDDD<td>DDDDD</td></tr>' +
-    '</table></div>';
+function loadExistingBoards() {
+    fetch('/all-boards').then((response) => {
+            return response.json()
+        }
+    ).then((data) => {
+            let boards = document.getElementById('boards');
+            for (let elem of data) {
+                let div = document.createElement('div');
+                let button = document.createElement('button');
+                button.className = 'expand';
+                button.innerText = 'v';
+                div.innerText = elem['board_name'];
+                div.appendChild(button);
+                let storiesDiv = document.createElement('div');
+                button.onclick = function() {
+                loadExistingStories(elem, storiesDiv)};
+                let closeButton = document.createElement('button');
+                closeButton.innerText = '^';
+                closeButton.onclick = function(){closeDiv(storiesDiv)};
+                boards.appendChild(closeButton);
+                div.appendChild(storiesDiv);
+                boards.appendChild(div);
+
+            }
+        }
+    )
+}
+
 
 function closeDiv(div) {
     div.innerHTML = '';

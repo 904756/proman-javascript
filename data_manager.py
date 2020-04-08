@@ -22,3 +22,17 @@ def check_username_and_password(cursor, username, password):
     good_password = password_info['password']
     psw_match = bcrypt.checkpw(password.encode('utf-8'), good_password.encode('utf-8'))
     return psw_match
+
+
+@database_connection.connection_handler
+def get_data_from_table(cursor):
+    cursor.execute('''SELECT * FROM stories ''')
+    all_stories = cursor.fetchall()
+    return all_stories
+
+
+@database_connection.connection_handler
+def get_all_boards(cursor):
+    cursor.execute('''select * from boards''')
+    all_boards = cursor.fetchall()
+    return all_boards
