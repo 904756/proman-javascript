@@ -45,4 +45,12 @@ def create_new_board(cursor, name):
 
 @database_connection.connection_handler
 def delete_board(cursor, board_id):
-    cursor.execute('''DELETE from boards WHERE board_id = %(board_id)s''', {'boardid': board_id})
+    cursor.execute('''DELETE from boards WHERE board_id = %(board_id)s''', {'board_id': board_id})
+    cursor.execute("""DELETE FROM stories WHERE board_id = %(board_id)s""", {'board_id': board_id})
+
+
+
+@database_connection.connection_handler
+def create_card(cursor, col, name, board):
+    cursor.execute("""INSERT INTO stories(column_name, story_name, board_id) VALUES(%(col)s, %(name)s, %(board)s)""",
+                   {'col': col, 'name': name, 'board': board})

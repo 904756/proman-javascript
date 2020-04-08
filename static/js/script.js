@@ -14,6 +14,17 @@ function loadExistingBoards() {
     ).then((data) => {
             let boards = document.getElementById('boards');
             for (let elem of data) {
+                let deleteButton = document.createElement('button');
+                deleteButton.innerText = 'Delete';
+                deleteButton.addEventListener('click', function (event) {
+                    fetch('/delete', {
+                        method: 'POST',
+                        credentials: "include",
+                        body: JSON.stringify({'board': elem['board_id']}),
+                        cache: "no-cache",
+                        headers: new Headers({'content-type': 'application/json'})
+                    }).then((res) => res.json()).then((data) => {console.log(data); window.location.reload()} )
+                });
                 let div = document.createElement('div');
                 let button = document.createElement('button');
                 button.className = 'expand';
@@ -30,6 +41,7 @@ function loadExistingBoards() {
                     closeDiv(storiesDiv)
                 };
                 div.appendChild(closeButton);
+                div.appendChild(deleteButton);
                 div.appendChild(storiesDiv);
                 div.className = 'story';
                 boards.appendChild(div);
@@ -39,12 +51,27 @@ function loadExistingBoards() {
     )
 }
 
+let newCardForm = document.getElementById('card');
 
 function divideStoriesInColumns(data, div, board) {
+    let newCard = document.createElement('button');
+    newCard.innerText = 'Add';
+    newCard.addEventListener('click', function (event) {
+        event.preventDefault();
+        showElement(newCardForm);
+    });
+    let createCardButton = document.getElementById('createNewCard');
+    createCardButton.addEventListener('click', function (event) {
+        // event.preventDefault();
+        let cardName = document.getElementById('newCard').value;
+        createNewCard(cardName, board['board_id']);
+        console.log(cardName);
+    });
+    div.appendChild(newCard);
     let colHeaders = ['New', 'In progress', 'Testing', 'Done'];
     for (let header of colHeaders) {
         let head = document.createElement('div');
-        head.innerText=header;
+        head.innerText = header;
         head.className = 'header';
         for (let story of Object.values(data)) {
             if (story['column_name'] === header && story['board_id'] === board['board_id']) {
@@ -53,8 +80,10 @@ function divideStoriesInColumns(data, div, board) {
                 head.appendChild(cardDiv);
             }
         }
+
         div.appendChild(head);
     }
+
 }
 
 function loadExistingStories(board, div) {
@@ -63,6 +92,25 @@ function loadExistingStories(board, div) {
         }
     ).then((data) => {
         divideStoriesInColumns(data, div, board)
+    })
+}
+
+function createNewCard(name, board_id) {
+    let cardInfo = {
+        'name': name,
+        'board_id': board_id,
+        'col': 'New'
+    };
+    fetch('/new-card', {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify(cardInfo),
+        cache: "no-cache",
+        headers: new Headers({'content-type': 'application/json'})
+    }).then((res) => {
+        return res.json()
+    }).then((data) => {
+        console.log(data)
     })
 }
 
@@ -77,7 +125,6 @@ let newBoardButton = document.getElementById('newBoard');
 let boardForm = document.getElementById('create');
 let button = document.getElementById('createNewBoard');
 button.addEventListener('click', function (event) {
-    event.preventDefault();
     saveBoard()
 });
 

@@ -63,6 +63,27 @@ def new_board():
     return res
 
 
+@app.route('/new-card', methods=['GET', 'POST'])
+def new_card():
+    card_info = request.get_json()
+    print(f"THE INFO{card_info}")
+    name = card_info['name']
+    col = card_info['col']
+    board = card_info['board_id']
+    data_manager.create_card(col, name, int(board))
+    res = make_response(jsonify({'response': 'it worked'}), 200)
+    return res
+
+
+@app.route('/delete', methods=['GET', 'POST'])
+def delete():
+    board_id = request.get_json()['board']
+    print(board_id)
+    data_manager.delete_board(int(board_id))
+    res = make_response(jsonify({'response': 'it worked'}), 200)
+    return res
+
+
 def main():
     app.run(debug=True)
 

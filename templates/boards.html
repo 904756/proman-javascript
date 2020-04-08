@@ -44,7 +44,14 @@
     <form>
         <label>Board Name</label>
         <input id="newBoard">
-        <button id="createNewBoard">Create Board</button>
+        <button id="createNewBoard" onclick="hideElement(boardForm)">Create Board</button>
+    </form>
+</div>
+<div id="card" class="invisible">
+    <form>
+        <label>Board Name</label>
+        <input id="newCard">
+        <button id="createNewCard" onclick="hideElement(newCardForm)">Create Card</button>
     </form>
 </div>
 </body>
