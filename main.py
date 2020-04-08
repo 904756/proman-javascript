@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify, make_response, sessi
 import data_manager
 
 app = Flask(__name__)
-# app.config["SECRET_KEY"] = 'PQHL-_RyvW8-rlGvakZUBQ'
 
 @app.route("/")
 def boards():
