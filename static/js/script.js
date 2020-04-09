@@ -42,7 +42,7 @@ function loadExistingBoards() {
                         let button = document.createElement('button');
                         button.className = 'expand';
                         button.innerText = 'v';
-                        div.innerText = elem['board_name'];
+                        div.innerText = 'asdasd';
                         div.appendChild(button);
                         let storiesDiv = document.createElement('div');
                         button.onclick = function () {
@@ -86,12 +86,15 @@ function loadExistingBoards() {
                         div.appendChild(button);
                         let storiesDiv = document.createElement('div');
                         button.onclick = function () {
-                            loadExistingStories(elem, storiesDiv)
+                            loadExistingStories(elem, storiesDiv);
+                            div.style.paddingBottom = '400px';
                         };
                         let closeButton = document.createElement('button');
                         closeButton.innerText = '^';
                         closeButton.onclick = function () {
-                            closeDiv(storiesDiv)
+                            closeDiv(storiesDiv);
+                            div.style.paddingBottom = '0px';
+
                         };
                         div.appendChild(closeButton);
                         div.appendChild(deleteButton);
@@ -127,7 +130,7 @@ function divideStoriesInColumns(data, div, board) {
     let colHeaders = ['New', 'Progress', 'Testing', 'Done'];
     for (let header of colHeaders) {
         let head = document.createElement('div');
-        head.innerText = header;
+        head.innerHTML ='<h3>' + header +'</h3><hr>';
         head.className = 'header';
         head.classList.add(header);
         head.ondrop = function (event) { drop(event, head.classList[1])};
@@ -142,6 +145,10 @@ function divideStoriesInColumns(data, div, board) {
                 cardDiv.ondragstart = function(event){drag(event)};
                 head.appendChild(cardDiv);
             }
+            // else{
+            //     let br = document.createElement('br');
+            //     head.appendChild(br);
+            // }
         }
 
         div.appendChild(head);
