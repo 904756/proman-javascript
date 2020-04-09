@@ -1,6 +1,4 @@
 #boards {
-padding:300px
-border:1px solid;
 align-content: center;
 }
 
@@ -61,3 +59,9 @@ font-size: 70px;
 padding-left:150px;
 margin-top: 100px;
 }
+
+.topnav{
+    background: url(../header.jpg);
+    background-size: cover;
+}
+
