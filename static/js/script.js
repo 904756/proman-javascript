@@ -23,7 +23,10 @@ function loadExistingBoards() {
                         body: JSON.stringify({'board': elem['board_id']}),
                         cache: "no-cache",
                         headers: new Headers({'content-type': 'application/json'})
-                    }).then((res) => res.json()).then((data) => {console.log(data); window.location.reload()} )
+                    }).then((res) => res.json()).then((data) => {
+                        console.log(data);
+                        window.location.reload()
+                    })
                 });
                 let div = document.createElement('div');
                 let button = document.createElement('button');
@@ -124,16 +127,21 @@ function closeDiv(div) {
 let newBoardButton = document.getElementById('newBoard');
 let boardForm = document.getElementById('create');
 let button = document.getElementById('createNewBoard');
+
 button.addEventListener('click', function (event) {
     saveBoard()
 });
 
 function saveBoard() {
     let boardName = document.getElementById('newBoard');
+    let boardInfo = {
+        'name': boardName.value,
+        'username': sessionStorage.getItem('username')
+    };
     fetch('/new-board', {
         method: 'POST',
         credentials: "include",
-        body: JSON.stringify({'name': boardName.value}),
+        body: JSON.stringify(boardInfo),
         cache: "no-cache",
         headers: new Headers({'content-type': 'application/json'})
     }).then((response) => {

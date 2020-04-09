@@ -39,15 +39,26 @@ def get_all_boards(cursor):
 
 
 @database_connection.connection_handler
-def create_new_board(cursor, name):
-    cursor.execute('''INSERT INTO boards(board_name) VALUES (%(name)s)''', {'name': name})
+def create_new_board(cursor, name, username=None):
+    cursor.execute('''INSERT INTO boards(board_name, user_id) VALUES (%(name)s, %(username)s)''',
+                   {'name': name, 'username': username})
+
+
+@database_connection.connection_handler
+def get_user_id_by_name(cursor, user):
+    cursor.execute('''
+                    SELECT user_id FROM proman_users
+                    WHERE username = %(user)s
+                    ''',
+                   {'user': user})
+    user_id = cursor.fetchone()
+    return user_id
 
 
 @database_connection.connection_handler
 def delete_board(cursor, board_id):
     cursor.execute('''DELETE from boards WHERE board_id = %(board_id)s''', {'board_id': board_id})
     cursor.execute("""DELETE FROM stories WHERE board_id = %(board_id)s""", {'board_id': board_id})
-
 
 
 @database_connection.connection_handler
