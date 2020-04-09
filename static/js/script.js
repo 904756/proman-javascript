@@ -1,9 +1,17 @@
 window.onload = function () {
-    loadExistingBoards()
+    loadExistingBoards();
+    let header = document.getElementById('head');
+    if ('username' in localStorage) {
+        header.innerHTML = '';
+        header.innerHTML = '<a href="#">' + localStorage.getItem('username') + '</a>' + '   ' + '<a href="/log-out" onclick="logOut()">Sign out</a>'
+    } else {
+        header.innerHTML = '';
+        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox)">Sign in</a>'+
+            '<a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>'
+    }
 
 
 };
-
 
 
 //Display Board Functions
@@ -138,7 +146,7 @@ function saveBoard() {
     let boardName = document.getElementById('newBoard');
     let boardInfo = {
         'name': boardName.value,
-        'username': sessionStorage.getItem('username')
+        'username': localStorage.getItem('username')
     };
     fetch('/new-board', {
         method: 'POST',
@@ -207,14 +215,14 @@ function sendUserInfo(username, password, string, callback) {
 }
 
 function setSessionUser(user) {
-    sessionStorage.setItem('username', user);
+    localStorage.setItem('username', user);
     let header = document.getElementById('head');
     header.innerHTML = '';
     header.innerHTML = '<a href="#">' + user + '</a>' + '   ' + '<a href="/log-out" onclick="logOut()">Sign out</a>'
 }
 
 function logOut() {
-    sessionStorage.removeItem('username');
+    localStorage.removeItem('username');
     let header = document.getElementById('head');
     header.innerHTML = '';
     header.innerHTML = '<a href="#">Sign in</a>' + "  " +
