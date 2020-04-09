@@ -66,3 +66,13 @@ def delete_board(cursor, board_id):
 def create_card(cursor, col, name, board):
     cursor.execute("""INSERT INTO stories(column_name, story_name, board_id) VALUES(%(col)s, %(name)s, %(board)s)""",
                    {'col': col, 'name': name, 'board': board})
+
+
+@database_connection.connection_handler
+def update_status(cursor, story_name, column_name):
+    cursor.execute('''
+                    UPDATE stories 
+                    SET column_name = %(column_name)s
+                    WHERE story_name = %(story_name)s
+    ''', {'column_name': column_name,
+          'story_name': story_name})

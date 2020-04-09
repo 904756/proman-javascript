@@ -109,6 +109,7 @@ function loadExistingBoards() {
 let newCardForm = document.getElementById('card');
 
 function divideStoriesInColumns(data, div, board) {
+    let countCard = 1;
     let newCard = document.createElement('button');
     newCard.innerText = 'Add';
     newCard.addEventListener('click', function (event) {
@@ -123,15 +124,22 @@ function divideStoriesInColumns(data, div, board) {
         console.log(cardName);
     });
     div.appendChild(newCard);
-    let colHeaders = ['New', 'In progress', 'Testing', 'Done'];
+    let colHeaders = ['New', 'Progress', 'Testing', 'Done'];
     for (let header of colHeaders) {
         let head = document.createElement('div');
         head.innerText = header;
         head.className = 'header';
+        head.classList.add(header);
+        head.ondrop = function (event) { drop(event, head.classList[1])};
+        head.ondragover = function(event){allowDrop(event);console.log("il primesc");};
         for (let story of Object.values(data)) {
             if (story['column_name'] === header && story['board_id'] === board['board_id']) {
                 let cardDiv = document.createElement('div');
                 cardDiv.innerText = story['story_name'];
+                cardDiv.id = (countCard).toString();
+                countCard ++;
+                cardDiv.setAttribute('draggable', true);
+                cardDiv.ondragstart = function(event){drag(event)};
                 head.appendChild(cardDiv);
             }
         }
@@ -271,4 +279,33 @@ function logOut() {
     header.innerHTML = '';
     header.innerHTML = '<a href="#">Sign in</a>' + "  " +
         '<a href="#">Sign up</a>'
+}
+
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function drop(event, header) {
+    event.preventDefault();
+    let data = event.dataTransfer.getData("text");
+    console.log(header);
+    event.target.appendChild(document.getElementById(data));
+    fetch(
+        '/update-status',{
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify({
+            'storyName': document.getElementById(data).innerText,
+            'columnName': header
+        }),
+        cache: "no-cache",
+        headers: new Headers({'content-type': 'application/json'})
+    }
+
+    ).then((res)=> {return res.json()});
+
+}
+
+function allowDrop(event) {
+    event.preventDefault();
 }

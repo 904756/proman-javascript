@@ -87,6 +87,15 @@ def delete():
     return res
 
 
+@app.route('/update-status', methods=['POST'])
+def update_status():
+    info = request.get_json()
+    story_name = info['storyName']
+    column_name = info['columnName']
+    data_manager.update_status(story_name, column_name)
+    res = make_response(jsonify({'response': 'it worked'}), 200)
+    return res
+
 
 def main():
     app.run(debug=True)
