@@ -33,7 +33,8 @@ def get_data_from_table(cursor):
 
 @database_connection.connection_handler
 def get_all_boards(cursor):
-    cursor.execute('''select * from boards''')
+    cursor.execute(
+        '''select boards.board_id, boards.board_name,boards.user_id, username from boards FULL JOIN proman_users ON boards.user_id=proman_users.user_id''')
     all_boards = cursor.fetchall()
     return all_boards
 

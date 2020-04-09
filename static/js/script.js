@@ -1,4 +1,4 @@
-window.onload = function () {
+window.addEventListener('load', function () {
     loadExistingBoards();
     let header = document.getElementById('head');
     if ('username' in localStorage) {
@@ -6,13 +6,11 @@ window.onload = function () {
         header.innerHTML = '<a href="#">' + localStorage.getItem('username') + '</a>' + '   ' + '<a href="/log-out" onclick="logOut()">Sign out</a>'
     } else {
         header.innerHTML = '';
-        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox)">Sign in</a>'+
+        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' +
             '<a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>'
     }
-
-
-};
-
+});
+// window.addEventListener('change', loadExistingBoards);
 
 //Display Board Functions
 
@@ -23,42 +21,86 @@ function loadExistingBoards() {
         }
     ).then((data) => {
             let boards = document.getElementById('boards');
-            for (let elem of data) {
-                let deleteButton = document.createElement('button');
-                deleteButton.innerText = 'Delete';
-                deleteButton.addEventListener('click', function (event) {
-                    fetch('/delete', {
-                        method: 'POST',
-                        credentials: "include",
-                        body: JSON.stringify({'board': elem['board_id']}),
-                        cache: "no-cache",
-                        headers: new Headers({'content-type': 'application/json'})
-                    }).then((res) => res.json()).then((data) => {
-                        console.log(data);
-                        window.location.reload()
-                    })
-                });
-                let div = document.createElement('div');
-                let button = document.createElement('button');
-                button.className = 'expand';
-                button.innerText = 'v';
-                div.innerText = elem['board_name'];
-                div.appendChild(button);
-                let storiesDiv = document.createElement('div');
-                button.onclick = function () {
-                    loadExistingStories(elem, storiesDiv)
-                };
-                let closeButton = document.createElement('button');
-                closeButton.innerText = '^';
-                closeButton.onclick = function () {
-                    closeDiv(storiesDiv)
-                };
-                div.appendChild(closeButton);
-                div.appendChild(deleteButton);
-                div.appendChild(storiesDiv);
-                div.className = 'story';
-                boards.appendChild(div);
+            if ('username' in localStorage) {
+                for (let elem of data) {
+                    if (elem['username'] === localStorage.getItem('username') || elem['username'] === null) {
+                        let deleteButton = document.createElement('button');
+                        deleteButton.innerText = 'Delete';
+                        deleteButton.addEventListener('click', function (event) {
+                            fetch('/delete', {
+                                method: 'POST',
+                                credentials: "include",
+                                body: JSON.stringify({'board': elem['board_id']}),
+                                cache: "no-cache",
+                                headers: new Headers({'content-type': 'application/json'})
+                            }).then((res) => res.json()).then((data) => {
+                                console.log(data);
+                                window.location.reload()
+                            })
+                        });
+                        let div = document.createElement('div');
+                        let button = document.createElement('button');
+                        button.className = 'expand';
+                        button.innerText = 'v';
+                        div.innerText = elem['board_name'];
+                        div.appendChild(button);
+                        let storiesDiv = document.createElement('div');
+                        button.onclick = function () {
+                            loadExistingStories(elem, storiesDiv)
+                        };
+                        let closeButton = document.createElement('button');
+                        closeButton.innerText = '^';
+                        closeButton.onclick = function () {
+                            closeDiv(storiesDiv)
+                        };
+                        div.appendChild(closeButton);
+                        div.appendChild(deleteButton);
+                        div.appendChild(storiesDiv);
+                        div.className = 'story';
+                        boards.appendChild(div);
 
+                    }
+                }
+            } else if (localStorage.getItem('username') === null) {
+                for (let elem of data) {
+                    if (elem['username'] === null) {
+                        let deleteButton = document.createElement('button');
+                        deleteButton.innerText = 'Delete';
+                        deleteButton.addEventListener('click', function (event) {
+                            fetch('/delete', {
+                                method: 'POST',
+                                credentials: "include",
+                                body: JSON.stringify({'board': elem['board_id']}),
+                                cache: "no-cache",
+                                headers: new Headers({'content-type': 'application/json'})
+                            }).then((res) => res.json()).then((data) => {
+                                console.log(data);
+                                window.location.reload()
+                            })
+                        });
+                        let div = document.createElement('div');
+                        let button = document.createElement('button');
+                        button.className = 'expand';
+                        button.innerText = 'v';
+                        div.innerText = elem['board_name'];
+                        div.appendChild(button);
+                        let storiesDiv = document.createElement('div');
+                        button.onclick = function () {
+                            loadExistingStories(elem, storiesDiv)
+                        };
+                        let closeButton = document.createElement('button');
+                        closeButton.innerText = '^';
+                        closeButton.onclick = function () {
+                            closeDiv(storiesDiv)
+                        };
+                        div.appendChild(closeButton);
+                        div.appendChild(deleteButton);
+                        div.appendChild(storiesDiv);
+                        div.className = 'story';
+                        boards.appendChild(div);
+
+                    }
+                }
             }
         }
     )
@@ -123,7 +165,8 @@ function createNewCard(name, board_id) {
     }).then((res) => {
         return res.json()
     }).then((data) => {
-        console.log(data)
+        console.log(data);
+        // loadExistingStories(this.parent.parent, this.parent)
     })
 }
 
@@ -157,7 +200,8 @@ function saveBoard() {
     }).then((response) => {
         return response.json()
     }).then((data) => {
-        console.log(data)
+        console.log(data);
+        loadExistingBoards();
     })
 }
 
