@@ -57,8 +57,13 @@ def all_boards():
 @app.route('/new-board', methods=['POST'])
 def new_board():
     name = request.get_json()['name']
-    print(name)
-    data_manager.create_new_board(name)
+    username = request.get_json()['username']
+    if username is None:
+        data_manager.create_new_board(name)
+    else:
+        user_id = data_manager.get_user_id_by_name(username)['user_id']
+        data_manager.create_new_board(name, user_id)
+
     res = make_response(jsonify({'response': 'it worked'}), 200)
     return res
 
@@ -66,7 +71,6 @@ def new_board():
 @app.route('/new-card', methods=['GET', 'POST'])
 def new_card():
     card_info = request.get_json()
-    print(f"THE INFO{card_info}")
     name = card_info['name']
     col = card_info['col']
     board = card_info['board_id']
@@ -78,7 +82,6 @@ def new_card():
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
     board_id = request.get_json()['board']
-    print(board_id)
     data_manager.delete_board(int(board_id))
     res = make_response(jsonify({'response': 'it worked'}), 200)
     return res
