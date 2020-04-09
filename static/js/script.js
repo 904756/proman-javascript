@@ -6,7 +6,7 @@ window.addEventListener('load', function () {
         header.innerHTML = '<a href="#">' + localStorage.getItem('username') + '</a>' + '   ' + '<a href="/log-out" onclick="logOut()">Sign out</a>'
     } else {
         header.innerHTML = '';
-        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' +
+        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' + "  "+
             '<a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>'
     }
 });
@@ -42,16 +42,18 @@ function loadExistingBoards() {
                         let button = document.createElement('button');
                         button.className = 'expand';
                         button.innerText = 'v';
-                        div.innerText = 'asdasd';
+                        div.innerText = elem['board_name'];
                         div.appendChild(button);
                         let storiesDiv = document.createElement('div');
                         button.onclick = function () {
-                            loadExistingStories(elem, storiesDiv)
+                            loadExistingStories(elem, storiesDiv);
+                            div.style.paddingBottom = '400px';
                         };
                         let closeButton = document.createElement('button');
                         closeButton.innerText = '^';
                         closeButton.onclick = function () {
-                            closeDiv(storiesDiv)
+                            closeDiv(storiesDiv);
+                            div.style.paddingBottom = '0px';
                         };
                         div.appendChild(closeButton);
                         div.appendChild(deleteButton);
@@ -265,7 +267,7 @@ function sendUserInfo(username, password, string, callback) {
         console.log(response);
         return response.json()
     }).then(function (message) {
-            window.alert(message.response);
+            console.log(message.response);
         }
     );
     if (callback) {
@@ -284,7 +286,7 @@ function logOut() {
     localStorage.removeItem('username');
     let header = document.getElementById('head');
     header.innerHTML = '';
-    header.innerHTML = '<a href="#">Sign in</a>' + "  " +
+    header.innerHTML = '<a href="#">Sign in</a>' + "  " +  "   "+
         '<a href="#">Sign up</a>'
 }
 
