@@ -76,3 +76,13 @@ def update_status(cursor, story_name, column_name):
                     WHERE story_name = %(story_name)s
     ''', {'column_name': column_name,
           'story_name': story_name})
+
+
+@database_connection.connection_handler
+def update_board(cursor, board_id, new_name):
+    cursor.execute('''
+                    UPDATE boards 
+                    SET board_name = %(new_name)s
+                    WHERE board_id = %(board_id)s
+    ''', {'new_name': new_name,
+          'board_id': board_id})

@@ -6,7 +6,7 @@ window.addEventListener('load', function () {
         header.innerHTML = '<a href="#">' + localStorage.getItem('username') + '</a>' + '   ' + '<a href="/log-out" onclick="logOut()">Sign out</a>'
     } else {
         header.innerHTML = '';
-        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' + "  "+
+        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' + "  " +
             '<a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>'
     }
 });
@@ -33,8 +33,7 @@ function loadExistingBoards() {
                                 body: JSON.stringify({'board': elem['board_id']}),
                                 cache: "no-cache",
                                 headers: new Headers({'content-type': 'application/json'})
-                            }).then((res) => res.json()).then((data) => {
-                                console.log(data);
+                            }).then((res) => res.json()).then(() => {
                                 window.location.reload()
                             })
                         });
@@ -42,7 +41,7 @@ function loadExistingBoards() {
                         let button = document.createElement('button');
                         button.className = 'expand';
                         button.innerText = 'v';
-                        div.innerText = elem['board_name'];
+                        div.innerHTML = `<h5 id="board-id-`+ elem.board_id +`" contenteditable="true" onfocusout="updateBoardTitle(` + elem.board_id + `)">` + elem.board_name + `</h5>`;
                         div.appendChild(button);
                         let storiesDiv = document.createElement('div');
                         button.onclick = function () {
@@ -75,8 +74,7 @@ function loadExistingBoards() {
                                 body: JSON.stringify({'board': elem['board_id']}),
                                 cache: "no-cache",
                                 headers: new Headers({'content-type': 'application/json'})
-                            }).then((res) => res.json()).then((data) => {
-                                console.log(data);
+                            }).then((res) => res.json()).then(() => {
                                 window.location.reload()
                             })
                         });
@@ -84,7 +82,7 @@ function loadExistingBoards() {
                         let button = document.createElement('button');
                         button.className = 'expand';
                         button.innerText = 'v';
-                        div.innerText = elem['board_name'];
+                        div.innerHTML = `<h5 id="board-id-` + elem.board_id + `" contenteditable="true" onfocusout="updateBoardTitle(` + elem.board_id + `)">` + elem.board_name + `</h5>`;
                         div.appendChild(button);
                         let storiesDiv = document.createElement('div');
                         button.onclick = function () {
@@ -132,19 +130,26 @@ function divideStoriesInColumns(data, div, board) {
     let colHeaders = ['New', 'Progress', 'Testing', 'Done'];
     for (let header of colHeaders) {
         let head = document.createElement('div');
-        head.innerHTML ='<h3>' + header +'</h3><hr>';
+        head.innerHTML = '<h3>' + header + '</h3><hr>';
         head.className = 'header';
         head.classList.add(header);
-        head.ondrop = function (event) { drop(event, head.classList[1])};
-        head.ondragover = function(event){allowDrop(event);console.log("il primesc");};
+        head.ondrop = function (event) {
+            drop(event, head.classList[1])
+        };
+        head.ondragover = function (event) {
+            allowDrop(event);
+            console.log("il primesc");
+        };
         for (let story of Object.values(data)) {
             if (story['column_name'] === header && story['board_id'] === board['board_id']) {
                 let cardDiv = document.createElement('div');
                 cardDiv.innerText = story['story_name'];
                 cardDiv.id = (countCard).toString();
-                countCard ++;
+                countCard++;
                 cardDiv.setAttribute('draggable', true);
-                cardDiv.ondragstart = function(event){drag(event)};
+                cardDiv.ondragstart = function (event) {
+                    drag(event)
+                };
                 head.appendChild(cardDiv);
             }
             // else{
@@ -181,8 +186,7 @@ function createNewCard(name, board_id) {
         headers: new Headers({'content-type': 'application/json'})
     }).then((res) => {
         return res.json()
-    }).then((data) => {
-        console.log(data);
+    }).then(() => {
         // loadExistingStories(this.parent.parent, this.parent)
     })
 }
@@ -216,10 +220,36 @@ function saveBoard() {
         headers: new Headers({'content-type': 'application/json'})
     }).then((response) => {
         return response.json()
-    }).then((data) => {
-        console.log(data);
+    }).then(() => {
         loadExistingBoards();
     })
+}
+
+function updateBoardTitle(boardId) {
+    let elementToSelect = "board-id-" + boardId;
+    let titleValue = document.getElementById(elementToSelect);
+    console.log(titleValue);
+
+    let data = {
+        'board_id': boardId,
+        'new_name': titleValue.innerText,
+    };
+
+    let settings = {
+        'method': 'POST',
+        'headers': {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(data),
+    };
+
+    fetch('/update-board', settings)
+        .then((serverResponse) => {
+            return serverResponse.json();
+        })
+        .then(() => {
+        })
 }
 
 
@@ -286,7 +316,7 @@ function logOut() {
     localStorage.removeItem('username');
     let header = document.getElementById('head');
     header.innerHTML = '';
-    header.innerHTML = '<a href="#">Sign in</a>' + "  " +  "   "+
+    header.innerHTML = '<a href="#">Sign in</a>' + "  " + "   " +
         '<a href="#">Sign up</a>'
 }
 
@@ -300,18 +330,19 @@ function drop(event, header) {
     console.log(header);
     event.target.appendChild(document.getElementById(data));
     fetch(
-        '/update-status',{
-        method: 'POST',
-        credentials: "include",
-        body: JSON.stringify({
-            'storyName': document.getElementById(data).innerText,
-            'columnName': header
-        }),
-        cache: "no-cache",
-        headers: new Headers({'content-type': 'application/json'})
-    }
-
-    ).then((res)=> {return res.json()});
+        '/update-status', {
+            method: 'POST',
+            credentials: "include",
+            body: JSON.stringify({
+                'storyName': document.getElementById(data).innerText,
+                'columnName': header
+            }),
+            cache: "no-cache",
+            headers: new Headers({'content-type': 'application/json'})
+        }
+    ).then((res) => {
+        return res.json()
+    });
 
 }
 

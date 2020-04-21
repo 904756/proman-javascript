@@ -97,6 +97,18 @@ def update_status():
     return res
 
 
+@app.route('/update-board', methods=['POST'])
+def update_board():
+    info = request.get_json()
+    board_id = info['board_id']
+    new_name = info['new_name']
+    data_manager.update_board(board_id, new_name)
+    res = make_response(jsonify({'response': 'it worked'}), 200)
+    return res
+
+
+
+
 def main():
     app.run(debug=True)
 
