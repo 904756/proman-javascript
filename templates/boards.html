@@ -18,44 +18,51 @@
     <nav class="topnav" id='head'>
         <a href="#" onclick="showElement(signInBox);hideElement(registrationBox)">Sign in</a>
         <a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>
+        <img  id="logo" src="../static/logo.png" alt="">
     </nav>
     <hr>
 </header>
-<h1>ProMan
-    <button id='makeNewBoard' onclick="showElement(boardForm)">Create new board</button>
-</h1>
 
+    <button id='makeNewBoard' onclick="showElement(boardForm)">Create new board</button>
 <div id="boards"></div>
 <div id="registration" class='invisible'>
-    <p>Registration</p>
-    <form>
-        <label>Username:</label><input id="username" type="text"></br></br></br>
-        <label>Password:</label><input id="password" type="password"></br></br></br>
-        <button id="submit_button">Sign up</button>
-    </form>
+    <div class="modal-contents">
+        <h3><b>Registration</b></h3>
+        <form>
+            <label>Username:</label><input id="username" type="text"></br></br></br>
+            <label>Password:</label><input id="password" type="password"></br></br></br>
+            <button id="submit_button">Sign up</button>
+        </form>
+    </div>
 </div>
 <div id="sign_in" class='invisible'>
-    <p>Sign in</p>
-    <form>
-        <label>Username:</label><input id="usernameSI" type="text"></br></br></br>
-        <label>Password:</label><input id="passwordSI" type="password"></br></br></br>
-        <button id="sign_in_button" onclick="window.location.reload()">Sign in</button>
-    </form>
+    <div class="modal-contents">
+        <h3><b>Sign in</b></h3>
+        <form>
+            <label>Username:</label><input id="usernameSI" type="text"></br></br></br>
+            <label>Password:</label><input id="passwordSI" type="password"></br></br></br>
+            <button id="sign_in_button" onclick="window.location.reload()">Sign in</button>
+        </form>
+    </div>
 </div>
 
 <div id="create" class="invisible">
-    <form>
-        <label>Board Name</label>
-        <input id="newBoard">
-        <button id="createNewBoard" onclick="hideElement(boardForm)">Create Board</button>
-    </form>
+    <div class="modal-contents">
+        <form>
+            <h2 style="text-align: center">New Board</h2>
+            <input id="newBoard"><br>
+            <button id="createNewBoard" onclick="hideElement(boardForm)">Create Board</button>
+        </form>
+    </div>
 </div>
 <div id="card" class="invisible">
-    <form>
-        <label>Card Name</label>
-        <input id="newCard">
-        <button id="createNewCard" onclick="hideElement(newCardForm)">Create Card</button>
-    </form>
+    <div class="modal-contents">
+        <form>
+            <h2 style="text-align: center">Card Name</h2>
+            <input id="newCard">
+            <button id="createNewCard" onclick="hideElement(newCardForm)">Create Card</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

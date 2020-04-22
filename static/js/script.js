@@ -6,8 +6,10 @@ window.addEventListener('load', function () {
         header.innerHTML = '<a href="#">' + localStorage.getItem('username') + '</a>' + '   ' + '<a href="/log-out" onclick="logOut()">Sign out</a>'
     } else {
         header.innerHTML = '';
-        header.innerHTML = '<a href="#" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' + "  " +
-            '<a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>'
+        header.innerHTML =
+            ' <img  style="width: 180px" src="../static/logo.png" alt="">' +
+            '<a href="#" style="color: white" onclick="showElement(signInBox);hideElement(registrationBox);">Sign in</a>' + "  " +
+            '<a href="#" style="color: white" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>'
     }
 });
 // window.addEventListener('change', loadExistingBoards);
