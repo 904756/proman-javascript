@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ProMan</title>
-    <link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-2.9.0.min.css"/>
+    {#    <link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-2.9.0.min.css"/>#}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <script src="{{ url_for('static', filename='js/data_handler.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/dom.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
@@ -18,12 +21,12 @@
     <nav class="topnav" id='head'>
         <a href="#" onclick="showElement(signInBox);hideElement(registrationBox)">Sign in</a>
         <a href="#" onclick="showElement(registrationBox);hideElement(signInBox)">Sign up</a>
-        <img  id="logo" src="../static/logo.png" alt="">
+        <img id="logo" src="../static/logo.png" alt="">
     </nav>
     <hr>
 </header>
 
-    <button id='makeNewBoard' onclick="showElement(boardForm)">Create new board</button>
+<button id='makeNewBoard' onclick="showElement(boardForm)">Create new board</button>
 <div id="boards"></div>
 <div id="registration" class='invisible'>
     <div class="modal-contents">
@@ -51,7 +54,7 @@
         <form>
             <h2 style="text-align: center">New Board</h2>
             <input id="newBoard"><br>
-            <button id="createNewBoard" onclick="hideElement(boardForm)">Create Board</button>
+            <button id="createNewBoard" onclick="hideElement(boardForm);window.location.reload()">Create Board</button>
         </form>
     </div>
 </div>
