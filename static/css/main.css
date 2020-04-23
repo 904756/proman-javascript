@@ -6,7 +6,8 @@
     height: auto;
     margin-left: 260px;
     padding: 100px;
-    background-color: #8B0000;
+    padding-bottom: 300px;
+    background-color: #420C09;
 }
 
 
@@ -58,7 +59,7 @@ body {
     content-align: center;
     border: 1px solid;
     height: 300px;
-    width: 175px;
+    width: 165px;
     text-align: center;
 }
 
@@ -68,7 +69,7 @@ body {
 
 .story {
     float: top;
-    margin-bottom: 100px;
+    margin-bottom: 40px;
     position: relative;
     top: 100px;
     border: 1px solid;
@@ -76,8 +77,9 @@ body {
     padding-left: 35px;
     margin-left: 100px;
     padding-top: 15px;
-    width: 900px;
-    border-radius: 10px;
+    padding-right:20px;
+    width: 880px;
+    border-radius: 5px;
     box-shadow: -1rem 0 3rem #000;
     height: 50px;
     background-color: white;
@@ -95,10 +97,12 @@ body {
 
 .empty-bar-board {
     background-color: #2e3033;
-    width: 935px;
+    width: 938px;
     height: 2px;
-    float: right;
+//     float: right;
     margin-top: 10px;
+    margin-left: -40px;
+
 }
 
 nav {
@@ -110,6 +114,8 @@ nav {
 h1 {
     font-size: 40px;
     font-weight: bolder;
+    color: white;
+    margin-left:100px;
 }
 
 h3.headers {
@@ -156,9 +162,15 @@ h5 {
 
 #makeNewBoard {
     margin-left: 820px;
-    float: center;
-    height: 50px;
+    color: white;
+    border:none;
+    background-color:inherit;
+    margin-left:750px;
+
 }
+
+.container{
+background-color:black}
 
 .expand {
     padding-right: 25px;
@@ -172,10 +184,11 @@ h5 {
 
 
 .addbtn {
-    color: #00ff00;
+    color: #f44336;
     align: center;
     border: none;
     background-color: white;
     float: right;
     margin-top: 55px;
+
 }
