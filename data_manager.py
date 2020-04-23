@@ -86,3 +86,9 @@ def update_board(cursor, board_id, new_name):
                     WHERE board_id = %(board_id)s
     ''', {'new_name': new_name,
           'board_id': board_id})
+
+
+@database_connection.connection_handler
+def delete_card(cursor, content):
+    cursor.execute(""" DELETE from stories WHERE story_name = %(content)s""", {'content': content})
+

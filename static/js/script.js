@@ -29,7 +29,8 @@ function loadExistingBoards() {
                         let deleteButton = document.createElement('button');
                         let container = document.createElement('div');
                         deleteButton.style.border = 'none';
-                        deleteButton.innerHTML='<i class="fa fa-trash-o fa-2x"></i>';
+                        deleteButton.className = 'del';
+                        deleteButton.innerHTML = '<i class="fa fa-trash-o fa-2x"></i>';
                         deleteButton.style.backgroundColor = 'white';
                         deleteButton.addEventListener('click', function (event) {
                             fetch('/delete', {
@@ -49,7 +50,7 @@ function loadExistingBoards() {
                         button.className = 'expand';
                         button.style.backgroundColor = 'white';
                         button.style.border = 'none';
-                        button.innerHTML='<i class="fa fa-angle-down "></i>';
+                        button.innerHTML = '<i class="fa fa-angle-down fa-2x"></i>';
                         div.innerHTML = `<h5 id="board-id-` + elem.board_id + `" contenteditable="true" onfocusout="updateBoardTitle(` + elem.board_id + `)">` + elem.board_name + `</h5>`;
 
                         let storiesDiv = document.createElement('div');
@@ -60,13 +61,15 @@ function loadExistingBoards() {
                         let closeButton = document.createElement('button');
                         closeButton.style.backgroundColor = 'white';
                         closeButton.style.border = 'none';
-                        closeButton.innerHTML='<i class="fa fa-angle-up "></i>';
+                        closeButton.className = 'close';
+                        closeButton.innerHTML = '<i class="fa fa-angle-up fa-2x"></i>';
                         closeButton.onclick = function () {
                             closeDiv(storiesDiv);
                             div.style.paddingBottom = '0px';
                         };
-                        div.appendChild(closeButton);
                         div.appendChild(button);
+                        div.appendChild(closeButton);
+
                         div.appendChild(deleteButton);
                         div.appendChild(line);
                         container.appendChild(storiesDiv);
@@ -82,7 +85,8 @@ function loadExistingBoards() {
                     if (elem['username'] === null) {
                         let deleteButton = document.createElement('button');
                         deleteButton.style.border = 'none';
-                        deleteButton.innerHTML='<i class="fa fa-trash-o fa-2x"></i>';
+                        deleteButton.className = 'del';
+                        deleteButton.innerHTML = '<i class="fa fa-trash-o fa-2x"></i>';
                         deleteButton.style.backgroundColor = 'white';
                         deleteButton.addEventListener('click', function (event) {
                             fetch('/delete', {
@@ -101,7 +105,7 @@ function loadExistingBoards() {
                         button.className = 'expand';
                         button.style.backgroundColor = 'white';
                         button.style.border = 'none';
-                        button.innerHTML='<i class="fa fa-angle-down"></i>';
+                        button.innerHTML = '<i class="fa fa-angle-down fa-2x"></i>';
                         div.innerHTML = `<h5 id="board-id-` + elem.board_id + `"contenteditable="true" onfocusout="updateBoardTitle(` + elem.board_id + `)">` + elem.board_name + `</h5>`;
                         let line = document.createElement('div');
                         line.className = 'empty-bar-board';
@@ -111,17 +115,18 @@ function loadExistingBoards() {
                             div.style.paddingBottom = '400px';
                         };
                         let closeButton = document.createElement('button');
-                        closeButton.innerHTML='<i class="fa fa-angle-up"></i>';
+                        closeButton.innerHTML = '<i class="fa fa-angle-up fa-2x"></i>';
                         closeButton.style.border = 'none';
+                        closeButton.className = 'close';
                         closeButton.style.backgroundColor = 'white';
                         closeButton.onclick = function () {
                             closeDiv(storiesDiv);
                             div.style.paddingBottom = '0px';
 
                         };
-
-                        div.appendChild(closeButton);
                         div.appendChild(button);
+                        div.appendChild(closeButton);
+
                         div.appendChild(deleteButton);
                         div.appendChild(line);
                         container.appendChild(storiesDiv);
@@ -143,12 +148,17 @@ let newCardForm = document.getElementById('card');
 function divideStoriesInColumns(data, div, board) {
     let countCard = 1;
     let newCard = document.createElement('button');
-    newCard.innerHTML='<i class="fa fa-plus-circle fa-3x"></i>';
+    newCard.innerHTML = '<i class="fa fa-plus-circle fa-4x"></i>';
     newCard.className = 'addbtn';
     newCard.addEventListener('click', function (event) {
         event.preventDefault();
         showElement(newCardForm);
     });
+    let trash = document.createElement('div');
+    trash.innerHTML = '<i class="fa fa-trash fa-2x"></i>';
+    trash.style.float = 'left';
+    trash.style.marginTop = '290px';
+
     let createCardButton = document.getElementById('createNewCard');
     createCardButton.addEventListener('click', function (event) {
         // event.preventDefault();
@@ -157,6 +167,7 @@ function divideStoriesInColumns(data, div, board) {
         console.log(cardName);
     });
     div.appendChild(newCard);
+    div.appendChild(trash);
     let colHeaders = ['New', 'Progress', 'Testing', 'Done'];
     for (let header of colHeaders) {
         let head = document.createElement('div');
@@ -166,6 +177,13 @@ function divideStoriesInColumns(data, div, board) {
         head.appendChild(empty);
         head.className = 'header';
         head.classList.add(header);
+        trash.ondrop = function (event) {
+            deleteOnDrop(event, head.classList[1])
+        };
+        trash.ondragover = function (event) {
+            allowDrop(event);
+            console.log("il primesc");
+        };
         head.ondrop = function (event) {
             drop(event, head.classList[1])
         };
@@ -386,4 +404,30 @@ function drop(event, header) {
 
 function allowDrop(event) {
     event.preventDefault();
+}
+
+
+function deleteOnDrop(event, header) {
+    event.preventDefault();
+    let data = event.dataTransfer.getData("text");
+    let child = document.getElementById(data);
+    let card = child.innerText;
+    console.log(child);
+    child.parentNode.removeChild(child);
+    console.log('deleted');
+    fetch(
+        '/delete-card', {
+            method: 'POST',
+            credentials: "include",
+            body: JSON.stringify({
+                'content': card,
+                'id': header
+            }),
+            cache: "no-cache",
+            headers: new Headers({'content-type': 'application/json'})
+        }
+    ).then((res) => {
+        return res.json()
+    });
+
 }

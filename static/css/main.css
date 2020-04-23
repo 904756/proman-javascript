@@ -1,6 +1,14 @@
 #boards {
     align-content: center;
+    border:1px solid black;
+    box-shadow: -1rem 0 3rem #000;
+    width: 1100px;
+    height: auto;
+    margin-left: 260px;
+    padding: 100px;
 }
+
+
 
 .invisible {
     background-color: rgba(0, 0, 0, 0.8);
@@ -21,6 +29,9 @@
     position: relative;
     border-radius: 4px;
 }
+
+body{
+    background-color: #17141d;}
 
 #newBoard {
     padding: 15px;
@@ -44,7 +55,7 @@
     content-align: center;
     border: 1px solid;
     height: 300px;
-    width: 185px;
+    width: 175px;
     text-align: center;
 }
 
@@ -60,14 +71,14 @@
     border: 1px solid;
     font-size: xx-large;
     padding-left: 35px;
-    margin-left: 450px;
+    margin-left: 100px;
     padding-top: 15px;
     width: 900px;
     border-radius: 10px;
     box-shadow: -1rem 0 3rem #000;
 //     display: flex;
     height: 50px;
-//     background-color : #17141d;
+    background-color : white;
 }
 
 .container{
@@ -80,7 +91,7 @@ height: 2px;
 }
 .empty-bar-board{
 background-color: #2e3033;
-width:100%;
+width:935px;
 height: 2px;
 float:right;
 margin-top:10px;
@@ -93,7 +104,7 @@ nav {
 }
 
 h1 {
-    font-size: 70px;
+    font-size: 40px;
     font-weight: bolder;
 }
 
@@ -132,18 +143,25 @@ label {
 }
 
 h5{
-margin: 10px;
+margin: 6px;
 position:absolute;
     font-weight:300;
-    left: 20px;
+    left: 70px;
     top: 15px;
 }
 
 #makeNewBoard{margin-left:820px;
+float:center;
 height: 50px;}
 
-button{
+.expand {
+padding-right: 25px;
 float:right}
+.close{
+padding-right: 10px;
+float:right}
+// .del{
+// float:right}
 
 
 .addbtn{
@@ -151,6 +169,6 @@ color:  #00ff00;
 align: center;
 border:none;
 background-color: white;
-float:left;
-margin-top: 50px;
+float:right;
+margin-top: 55px;
 }

@@ -106,7 +106,13 @@ def update_board():
     res = make_response(jsonify({'response': 'it worked'}), 200)
     return res
 
-
+@app.route('/delete-card', methods=['POST'])
+def delete_card():
+    card_info = request.get_json()
+    print(card_info)
+    data_manager.delete_card(card_info['content'])
+    res = make_response(jsonify({'response': 'it worked'}), 200)
+    return res
 
 
 def main():
