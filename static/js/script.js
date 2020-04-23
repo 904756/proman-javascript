@@ -27,10 +27,10 @@ function loadExistingBoards() {
                 for (let elem of data) {
                     if (elem['username'] === localStorage.getItem('username') || elem['username'] === null) {
                         let deleteButton = document.createElement('button');
-                        deleteButton.style.backgroundColor = 'white';
+                        let container = document.createElement('div');
                         deleteButton.style.border = 'none';
-                        deleteButton.style.float = 'right';
-                        deleteButton.classList.add('fa fa-trash');
+                        deleteButton.innerHTML='<i class="fa fa-trash-o fa-2x"></i>';
+                        deleteButton.style.backgroundColor = 'white';
                         deleteButton.addEventListener('click', function (event) {
                             fetch('/delete', {
                                 method: 'POST',
@@ -43,9 +43,13 @@ function loadExistingBoards() {
                             })
                         });
                         let div = document.createElement('div');
+                        let line = document.createElement('div');
+                        line.className = 'empty-bar-board';
                         let button = document.createElement('button');
                         button.className = 'expand';
-                        button.innerHTML='<i class="fas fa-sort-down fa-lg"></i>';
+                        button.style.backgroundColor = 'white';
+                        button.style.border = 'none';
+                        button.innerHTML='<i class="fa fa-angle-down "></i>';
                         div.innerHTML = `<h5 id="board-id-` + elem.board_id + `" contenteditable="true" onfocusout="updateBoardTitle(` + elem.board_id + `)">` + elem.board_name + `</h5>`;
 
                         let storiesDiv = document.createElement('div');
@@ -54,15 +58,20 @@ function loadExistingBoards() {
                             div.style.paddingBottom = '400px';
                         };
                         let closeButton = document.createElement('button');
-                        closeButton.innerHTML='<i class="fas fa-sort-up fa-lg"></i>';
+                        closeButton.style.backgroundColor = 'white';
+                        closeButton.style.border = 'none';
+                        closeButton.innerHTML='<i class="fa fa-angle-up "></i>';
                         closeButton.onclick = function () {
                             closeDiv(storiesDiv);
                             div.style.paddingBottom = '0px';
                         };
-                        div.appendChild(deleteButton);
                         div.appendChild(closeButton);
                         div.appendChild(button);
-                        div.appendChild(storiesDiv);
+                        div.appendChild(deleteButton);
+                        div.appendChild(line);
+                        container.appendChild(storiesDiv);
+                        container.className = 'container';
+                        div.appendChild(container);
                         div.className = 'story';
                         boards.appendChild(div);
 
@@ -75,7 +84,6 @@ function loadExistingBoards() {
                         deleteButton.style.border = 'none';
                         deleteButton.innerHTML='<i class="fa fa-trash-o fa-2x"></i>';
                         deleteButton.style.backgroundColor = 'white';
-                        deleteButton.style.marginLeft ='300px';
                         deleteButton.addEventListener('click', function (event) {
                             fetch('/delete', {
                                 method: 'POST',
